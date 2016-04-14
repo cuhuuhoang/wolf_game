@@ -77,7 +77,7 @@
         $('ul li').each(function(i, value){
           height += parseInt($(this).height());
         });
-
+        height += 100;
         height += '';
         $('#chat-box').animate({scrollTop: height});
       }

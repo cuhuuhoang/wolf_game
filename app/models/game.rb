@@ -1,5 +1,5 @@
 class Game < ActiveRecord::Base
-  has_many :chatlogs
-  has_many :players
-  has_many :tasks
+  has_many :chatlogs, dependent: :destroy
+  has_many :players, dependent: :destroy
+  has_many :tasks, dependent: :destroy
 end
