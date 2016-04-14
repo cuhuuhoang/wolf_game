@@ -1,0 +1,2 @@
+module ChatlogsHelper
+end

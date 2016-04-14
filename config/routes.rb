@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resource :chatlogs
   devise_for :users, :controllers => { :registrations => "registrations" }
   # devise_scope :user do
   #   # root :to => 'devise/registrations#new'
