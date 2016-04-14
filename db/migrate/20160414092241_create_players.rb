@@ -5,8 +5,8 @@ class CreatePlayers < ActiveRecord::Migration
       t.references :game, index: true, foreign_key: true
       t.string :char
       t.string :vote
-      t.references :original_role, index: true, foreign_key: true
-      t.references :current_role, index: true, foreign_key: true
+      t.integer :original_role_id, :class_name => 'Role', index: true, foreign_key: true
+      t.integer :current_role_id, :class_name => 'Role', index: true, foreign_key: true
 
       t.timestamps null: false
     end

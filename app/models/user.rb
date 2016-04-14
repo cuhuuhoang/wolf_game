@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :chatlogs
-  has_many :players
+  has_many :chatlogs, dependent: :destroy
+  has_many :players, dependent: :destroy
   validates_presence_of :nick_name
 
 end

@@ -6,6 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+system = User.new(email: "system@cuhuuhoang.com", nick_name: "Hệ Thống",
+                  password: "12345678", password_confirmation: "12345678")
 hoang =User.new (email: "cuhuuhoang@gmail.com", nick_name: "Hoàng",
                  password: "12345678", password_confirmation: "12345678")
 hoang.save!
@@ -14,6 +16,7 @@ hoang.save!
                    password: "12345678", password_confirmation: "12345678")
   hoang.save!
 end
+
 
 Role.new(role_id: 1, name: "Dân làng", description: "Dân làng không có bất kì chức năng đặc biệt nào cả, dân làng
 theo phe dân");
@@ -30,4 +33,8 @@ không được nhìn những lá này, Những người nhận lá bài khác t
 lá bài vừa đổi, dẫu cho họ không hề biết nhân vật đó là ai cho đến khi trò chơi kết thúc. Kẻ gây rối
 theo phe dân")
 
-game = Game.new(is_current: true)
+game = Game.new(is_current: true, deck: "1,2,2,3,4,5")
+
+game.tasks.create(name: "waitingforstartgame",begin_task: Datetime.now)
+
+Wakeup.new()

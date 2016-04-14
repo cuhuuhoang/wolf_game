@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414033229) do
+ActiveRecord::Schema.define(version: 20160414104223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,13 +19,59 @@ ActiveRecord::Schema.define(version: 20160414033229) do
   create_table "chatlogs", force: :cascade do |t|
     t.text     "content"
     t.integer  "user_id"
+    t.integer  "game_id"
     t.integer  "kind"
     t.string   "target"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_index "chatlogs", ["game_id"], name: "index_chatlogs_on_game_id", using: :btree
   add_index "chatlogs", ["user_id"], name: "index_chatlogs_on_user_id", using: :btree
+
+  create_table "games", force: :cascade do |t|
+    t.boolean  "is_current", default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "deck"
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "game_id"
+    t.string   "char"
+    t.string   "vote"
+    t.integer  "original_role_id"
+    t.integer  "current_role_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "players", ["current_role_id"], name: "index_players_on_current_role_id", using: :btree
+  add_index "players", ["game_id"], name: "index_players_on_game_id", using: :btree
+  add_index "players", ["original_role_id"], name: "index_players_on_original_role_id", using: :btree
+  add_index "players", ["user_id"], name: "index_players_on_user_id", using: :btree
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "role_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "time_limit", default: -1
+    t.integer  "delay_time", default: 2
+    t.integer  "max_time",   default: -1
+    t.datetime "begin_task"
+    t.integer  "game_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "tasks", ["game_id"], name: "index_tasks_on_game_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -47,5 +93,15 @@ ActiveRecord::Schema.define(version: 20160414033229) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "wakeups", force: :cascade do |t|
+    t.datetime "sleep_until"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_foreign_key "chatlogs", "games"
   add_foreign_key "chatlogs", "users"
+  add_foreign_key "players", "games"
+  add_foreign_key "players", "users"
+  add_foreign_key "tasks", "games"
 end

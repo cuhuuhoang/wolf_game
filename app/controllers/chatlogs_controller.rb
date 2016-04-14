@@ -3,9 +3,12 @@ class ChatlogsController < ApplicationController
   def show
     if !params[:id].nil?
       chatlog = Chatlog.find_by(id: params[:id])
-      @chatlogs = Chatlog.all.where("created_at > ?", chatlog.created_at)
+    end
+
+    if(chatlog != null)
+      @chatlogs = CurrentGameLog.where("created_at > ?", chatlog.created_at)
     else
-      @chatlogs = Chatlog.all.where("created_at > ?", 10.minutes.ago)
+      @chatlogs = CurrentGameLog.where("created_at > ?", 10.minutes.ago)
     end
     #
     # respond_to do |format|
