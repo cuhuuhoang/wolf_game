@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :chatlogs
+  has_many :players
   validates_presence_of :nick_name
 
 end

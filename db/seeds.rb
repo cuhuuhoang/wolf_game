@@ -6,44 +6,28 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-# admin = User.new(
-#     :email                 => "huuhoangcu@gmail.com",
-#     :username              => "huuhoangcu",
-#     :full_name             => "Cù Hữu Hoàng",
-#     :type                  => "Teacher",
-#     :is_admin              => true,
-#     :password              => "12345678",
-#     :password_confirmation => "12345678"
-# )
-# admin.skip_confirmation!
-# admin.save!
-#
-# 1.upto(1) do |i|
-#   teacher = User.new(
-#       :email                 => "teacher#{i}@exam.edu.vn",
-#       :username              => "teacher#{i}",
-#       :full_name             => "Test Teacher #{i}",
-#       :type                  => "Teacher",
-#       :is_admin              => false,
-#       :password              => "12345678",
-#       :password_confirmation => "12345678"
-#   )
-#   teacher.skip_confirmation!
-#   teacher.save!
-#
-#   student = User.new(
-#       :email                 => "student#{i}@exam.edu.vn",
-#       :username              => "student#{i}",
-#       :full_name             => "Test Student #{i}",
-#       :type                  => "Student",
-#       :is_admin              => false,
-#       :password              => "12345678",
-#       :password_confirmation => "12345678"
-#   )
-#   student.skip_confirmation!
-#   student.save!
-#
-#   teacher.teach(student)
-#   student.learn(teacher)
-# end
+hoang =User.new (email: "cuhuuhoang@gmail.com", nick_name: "Hoàng",
+                 password: "12345678", password_confirmation: "12345678")
+hoang.save!
+1.upto(10) do |i|
+  hoang =User.new (email: "cuhuuhoang#{i}@gmail.com", nick_name: "Hoàng #{i}",
+                   password: "12345678", password_confirmation: "12345678")
+  hoang.save!
+end
 
+Role.new(role_id: 1, name: "Dân làng", description: "Dân làng không có bất kì chức năng đặc biệt nào cả, dân làng
+theo phe dân");
+Role.new(role_id: 2, name: "Ma sói", description: "Vào ban đêm, tất cả ma sói mở mắt và đi tìm những ma sói khác,
+nếu không có ai mở mắt thì ma sói còn lại đang ở giữa, ma sói theo phe sói")
+Role.new(role_id: 3, name: "Đạo tặc", description: "Ban đêm, đạo tặc có thể chọn cướp 1 lá bài từ người khác và đặt
+nhân vật của mình thế vào lá bài kia. Sau đó đạo tặc nhìn vào lá bài mới của mình. Người mang lá bài đạo tặc
+theo phe dân. Đương nhiên, anh chàng không được thực hiện chức năng của nhân vật mới vào ban đêm.
+Nếu đạo tặc chọn không cướp lá bài từ những người khác, anh chàng vẫn là đạo tặc và theo phe dân")
+Role.new(role_id: 4, name: "Tiên tri", description: "Ban đêm, tiên tri có thể nhìn lá bài nhân vật của người khác
+hoặc là xem 2 lá bài ở giữa, nhưng không được di chuyển chúng. Tiên tri theo phe dân")
+Role.new(role_id: 5, name: "Kẻ gây rối", description: "Vào ban đêm, Kẻ gây rối có thể tráo bài của 2 người khác mà
+không được nhìn những lá này, Những người nhận lá bài khác thì bây giờ đã là nhân vật (và phe) mới theo
+lá bài vừa đổi, dẫu cho họ không hề biết nhân vật đó là ai cho đến khi trò chơi kết thúc. Kẻ gây rối
+theo phe dân")
+
+game = Game.new(is_current: true)

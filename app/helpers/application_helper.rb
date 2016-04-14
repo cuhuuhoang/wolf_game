@@ -11,6 +11,9 @@ module ApplicationHelper
 end
 
 module Roles
-  Teacher = "Teacher"
-  Student = "Student"
+  Danlang =1
+  Masoi=2
+  Daotac =3
+  Tientri =4
+  Kegayroi=5
 end
