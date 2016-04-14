@@ -1,0 +1,53 @@
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title">Sửa thông tin tài khoản</h3>
+  </div>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }, ) do |f| %>
+    <div class="box-body">
+      <%= devise_error_messages! %>
+      <div class="form-group">
+        <label for="email">Email: <%= current_user.email %></label> <br />
+      </div>
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Đang đợi xác nhận email: <%= resource.unconfirmed_email %></div>
+      <% end %>
+      <div class="form-group">
+        <%= f.label :nick_name %><br />
+        <%= f.text_field :nick_name, :class => "form-control" %>
+      </div>
+      <div class="field">
+        <%= f.label :password %> <i>(bỏ qua nếu không muốn thay đổi)</i><br />
+        <%= f.password_field :password, autocomplete: "off", :class => "form-control" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "off", :class => "form-control" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :current_password %> <i>(bạn cần nhập mật khẩu hiện tại để xác nhận thay đổi)</i><br />
+        <%= f.password_field :current_password, autocomplete: "off", :class => "form-control" %>
+      </div>
+
+    </div><!-- /.box-body -->
+
+    <div class="box-footer">
+      <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </div>
+  <% end %>
+  <%= link_to "Quay lại", :back %>
+</div>
+
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title">Xóa tài khoản</h3>
+  </div><!-- /.box-header -->
+  <!-- form start -->
+    <div class="box-body">
+      <div class="form-group">
+        Bạn có muốn xóa tài khoản hiện tại ? Tài khoản bị xóa sẽ không thể lấy lại
+        <p><%= button_to "Xóa tài khoản", registration_path(resource_name), data: { confirm: "Bạn có chắc chắn không?" }, method: :delete, :class => "btn btn-primary" %></p>
+      </div>
+    </div>
+</div>

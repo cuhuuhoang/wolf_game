@@ -1,0 +1,7 @@
+<p>Xin chào <%= @resource.email %>!</p>
+
+<p>Tài khoản của bạn đã bị khóa vì đăng nhập không thành công nhiều lần </p>
+
+<p>Hãy truy cập vào link dưới để mở khóa tài khoản</p>
+
+<p><%= link_to 'Mở khóa tài khoản', unlock_url(@resource, unlock_token: @token) %></p>

@@ -1,0 +1,22 @@
+vi:
+  activerecord:
+    models:
+      user: Người dùng
+      teacher: Giáo viên
+      student: Học viên
+    attributes:
+      user:
+        username: Tên đăng nhập
+        password: Mật khẩu
+        password_confirmation: Mật khẩu xác nhận
+        type: Loại người dùng
+        full_name: Tên đầy đủ
+        address: Địa chỉ
+        dob: Ngày sinh
+        current_password: Mật khẩu hiện tại
+        phone: Số điện thoại
+        avatar: Ảnh đại diện
+        nick_name: Nick name
+    errors:
+      messages:
+        confirmation: không khớp

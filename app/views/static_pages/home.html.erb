@@ -1,0 +1,8 @@
+<h1>Hi
+  <% if user_signed_in? %>
+    <%= current_user.nick_name %> <br />
+    <%= link_to "Sửa thông tin cá nhân", edit_user_registration_path %>
+  <% else %>
+    there :)
+  <% end %>
+</h1>

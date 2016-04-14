@@ -1,0 +1,48 @@
+<nav class='navbar navbar-static-top' role='navigation'>
+  <!-- Sidebar toggle button -->
+  <div class='navbar-right'>
+    <ul class='nav navbar-nav'>
+      <!-- User Account: style can be found in dropdown.less -->
+      <li class='dropdown user user-menu'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+          <i class='glyphicon glyphicon-user'></i>
+                <span>
+                  <i class='caret'></i>
+                </span>
+        </a>
+        <ul class='dropdown-menu'>
+          <!-- User image -->
+          <li class='user-header bg-light-blue'>
+            <p>
+              <small>
+                <!--Member since-->
+                <%= current_user.nick_name %>
+              </small>
+            </p>
+          </li>
+          <!-- Menu Body -->
+          <!--<li class='user-body'>-->
+            <!--<div class='col-xs-4 text-center'>-->
+              <!--<a href='#'>Followers</a>-->
+            <!--</div>-->
+            <!--<div class='col-xs-4 text-center'>-->
+              <!--<a href='#'>Sales</a>-->
+            <!--</div>-->
+            <!--<div class='col-xs-4 text-center'>-->
+              <!--<a href='#'>Friends</a>-->
+            <!--</div>-->
+          <!--</li>-->
+          <!-- Menu Footer -->
+          <li class='user-footer'>
+            <div class='pull-left'>
+              <a class='btn btn-default btn-flat' href='<%= edit_user_registration_path %>'>Thông tin cá nhân</a>
+            </div>
+            <div class='pull-right'>
+                <a class="btn btn-default btn-flat" rel="nofollow" data-method="delete" href="<%= destroy_user_session_path %>">Đăng xuất</a>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

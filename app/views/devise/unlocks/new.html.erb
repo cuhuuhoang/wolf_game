@@ -1,0 +1,19 @@
+<div class="header">Gửi email mở khóa tài khoản</div>
+
+<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+  <div class="body bg-gray">
+    <%= devise_error_messages! %>
+
+    <div class="form-group">
+      <%= f.text_field :email, autofocus: true, :placeholder => "Email", :class => "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Gửi email mở khóa tài khoản", :class => "btn bg-olive btn-block"  %>
+    </div>
+
+    <div class="footer">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+<% end %>
