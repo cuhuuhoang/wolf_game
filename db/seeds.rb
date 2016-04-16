@@ -36,9 +36,12 @@ không được nhìn những lá này, Những người nhận lá bài khác t
 lá bài vừa đổi, dẫu cho họ không hề biết nhân vật đó là ai cho đến khi trò chơi kết thúc. Kẻ gây rối
 theo phe dân")
 
-game = Game.new(is_current: true, deck: "1,2,2,3,4,5")
+game = Game.new(is_current: true)
 game.save!
 
-game.tasks.create(name: "waitingforstartgame",begin_task: DateTime.now)
+game.game_statuses.create(name: "isnight", value: "false")
+game.game_statuses.create(name: "giveuptime", value: DateTime.now+ 100.years)
+
+Task.create(name: "waitingforstartgame",begin_task: DateTime.now)
 
 Wakeup.create()

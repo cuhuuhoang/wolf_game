@@ -1,8 +1,8 @@
 <% @chatlogs.each do |chatlog|   %>
   <li class="mar-btm" data-id="<%= chatlog.id %>">
-    <div class="media-body pad-hor <%= 'speech-right' if chatlog.user.id == current_user.id %>">
+    <div class="media-body pad-hor <%= SpeechClass(chatlog)%>">
       <div class="speech">
-        <a href="#" class="media-heading"><%= chatlog.user.nick_name %></a>
+        <a href="#" class="media-heading"><%= chatlog.user.nick_name %> <%= " - "+chatlog.user.players.first.char if chatlog.user.players.exists? %></a>
         <p><%= chatlog.content %></p>
         <p class="speech-time">
           <i class="fa fa-clock-o fa-fw"></i> <%= chatlog.created_at %>

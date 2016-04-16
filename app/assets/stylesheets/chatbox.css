@@ -139,6 +139,49 @@ body{
 .speech-right>.speech .media-heading {
     color: #a07617;
 }
+.speech-system>.speech:before {
+    left: auto;
+    right: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid #BCF7D3;
+    border-right: 0;
+    margin: 15px -6px 0 0;
+}
+.speech-system {
+    text-align: left;
+}
+.speech-system>.speech {
+    background: #BCF7D3;
+    color: #16A12D;
+    text-align: left;
+}
+.speech-system>.speech .media-heading {
+    color: #16A12D;
+}
+
+.speech-single>.speech:before {
+    left: auto;
+    right: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid #FCD4D9;
+    border-right: 0;
+    margin: 15px -6px 0 0;
+}
+.speech-single {
+    text-align: left;
+}
+.speech-single>.speech {
+    background: #FCD4D9;
+    color: #FF6173;
+    text-align: left;
+}
+.speech-single>.speech .media-heading {
+    color: #FF6173;
+}
+
+
 .btn-primary, .btn-primary:focus, .btn-hover-primary:hover, .btn-hover-primary:active, .btn-hover-primary.active, .btn.btn-active-primary:active, .btn.btn-active-primary.active, .dropdown.open>.btn.btn-active-primary, .btn-group.open .dropdown-toggle.btn.btn-active-primary {
     background-color: #579ddb;
     border-color: #5fa2dd;

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414104223) do
+ActiveRecord::Schema.define(version: 20160415133620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,11 +29,21 @@ ActiveRecord::Schema.define(version: 20160414104223) do
   add_index "chatlogs", ["game_id"], name: "index_chatlogs_on_game_id", using: :btree
   add_index "chatlogs", ["user_id"], name: "index_chatlogs_on_user_id", using: :btree
 
+  create_table "game_statuses", force: :cascade do |t|
+    t.string   "name"
+    t.string   "value"
+    t.integer  "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "game_statuses", ["game_id"], name: "index_game_statuses_on_game_id", using: :btree
+
   create_table "games", force: :cascade do |t|
-    t.boolean  "is_current", default: true
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.string   "deck"
+    t.boolean  "is_current",  default: true
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "center_card"
   end
 
   create_table "players", force: :cascade do |t|
@@ -66,12 +76,9 @@ ActiveRecord::Schema.define(version: 20160414104223) do
     t.integer  "delay_time", default: 2
     t.integer  "max_time",   default: -1
     t.datetime "begin_task"
-    t.integer  "game_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
-
-  add_index "tasks", ["game_id"], name: "index_tasks_on_game_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -101,7 +108,7 @@ ActiveRecord::Schema.define(version: 20160414104223) do
 
   add_foreign_key "chatlogs", "games"
   add_foreign_key "chatlogs", "users"
+  add_foreign_key "game_statuses", "games"
   add_foreign_key "players", "games"
   add_foreign_key "players", "users"
-  add_foreign_key "tasks", "games"
 end
