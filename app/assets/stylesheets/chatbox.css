@@ -57,7 +57,7 @@ body{
     padding: 15px;
 }
 .mar-btm {
-    margin-bottom: 15px;
+    margin-bottom: 4px;
 }
 .media-block .media-left {
     display: block;
@@ -82,7 +82,7 @@ body{
     color: #317787;
     display: inline-block;
     border-radius: 0;
-    padding: 12px 20px;
+    padding: 4px 10px;
 }
 .speech:before {
     content: "";
@@ -107,12 +107,12 @@ body{
     margin: 15px -6px 0 0;
 }
 .speech .media-heading {
-    font-size: 1.2em;
+    font-size: 1em;
     color: #317787;
     display: block;
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    margin-bottom: 10px;
-    padding-bottom: 5px;
+    margin-bottom: 3px;
+    padding-bottom: 1px;
     font-weight: 300;
 }
 .speech-time {
@@ -180,7 +180,9 @@ body{
 .speech-single>.speech .media-heading {
     color: #FF6173;
 }
-
+.speech p{
+    margin-bottom: 0px;
+}
 
 .btn-primary, .btn-primary:focus, .btn-hover-primary:hover, .btn-hover-primary:active, .btn-hover-primary.active, .btn.btn-active-primary:active, .btn.btn-active-primary.active, .dropdown.open>.btn.btn-active-primary, .btn-group.open .dropdown-toggle.btn.btn-active-primary {
     background-color: #579ddb;
