@@ -38,24 +38,17 @@ module ChatlogsHelper
         # L(Task.first.name)
         # L(Game.all.size.to_s)
         CreateGame()
-        CreateTask(TaskName::WatingForPlayers)
         L("Mọi người vui lòng gõ bất kì để vào game", :all)
         AddPlayer(chatlog.user)
+        CreateTask(TaskName::WatingForPlayers)
       end
     elsif task.name == TaskName::WatingForPlayers
       if chatlog.content == "ketthuc"
-        CreateTask(TaskName::WatingForStartGame)
         SetStatus(StatusName::IsNight, "false")
         L("Game đã hủy", :all)
+        CreateTask(TaskName::WatingForStartGame)
       elsif chatlog.content == "confirm"
         CreateTask(TaskName::StartingGame, 1)
-        #showwolfcompanion 5s
-        #tellelfchooseonecardortwomiddlecards
-        #tellrobberchangecards
-        #tellpharoiswapcards
-        #thedaycome, nowallchatvisible
-        #nowvote
-        #showvoteresult, whowin
       else #go bat ki de gia nhap game
         if !Game.first.players.exists?(user_id: chatlog.user.id)
           AddPlayer(chatlog.user)
@@ -184,91 +177,94 @@ module ChatlogsHelper
   end
 
   def CheckTask
-    giveuptime = DateTime.strptime(GetStatus(StatusName::GiveUpTime), '%Y-%m-%dT%H:%M:%S%z')
-    if giveuptime < DateTime.now
-      SetStatus(StatusName::GiveUpTime, DateTime.now + 100.years)
-      task =Task.first
-      if task.name == TaskName::StartingGame
-        StartGame()
-        SetStatus(StatusName::IsNight, "true")
-        L("Mọi câu nói của các bạn từ bây giờ sẽ không ai thấy", :all)
-        CreateTask(TaskName::WatingForReadingRole, 5)
-      elsif task.name == TaskName::WatingForReadingRole
-        L("Game chính thức bắt đầu, màn đêm bắt đầu buông xuống", :all)
-        CreateTask(TaskName::ReadWolfCompanion, 3)
-      elsif task.name == TaskName::ReadWolfCompanion
-        L("Sói đang đi tìm kiếm bạn đồng hành của mình", :all)
-        wolfs_in_game = Role.where("role_id = '2'").first.original_role_players
-        # L(wolfs_in_game.to_s, :all)
-        # L(wolfs_in_game.size, :all)
-        if wolfs_in_game.size == 1
-          L("Bạn là ma sói duy nhất trong game, bạn được xem 1 quân bài ở giữa, vui lòng nhập một trong các số 1,2,3", wolfs_in_game.first.user.id)
-          CreateTask(TaskName::WolfReadCenterCard)
-        elsif wolfs_in_game.size ==2
-          L("Ma sói khác trong số người cùng chơi là "+ wolfs_in_game[1].user.nick_name + " - " +wolfs_in_game[1].char, wolfs_in_game[0].user.id)
-          L("Ma sói khác trong số người cùng chơi là "+ wolfs_in_game[0].user.nick_name + " - " +wolfs_in_game[0].char, wolfs_in_game[1].user.id)
-          CreateTask(TaskName::DoneReadWolfCompanion, 5)
-        else
-          CreateTask(TaskName::DoneReadWolfCompanion, 5)
-        end
-      elsif task.name == TaskName::DoneReadWolfCompanion
-        L("Sói đã hoàn thành nhiệm vụ và nhắm mắt ngủ tiếp", :all)
-        L("Tiên tri đang thức giấc và thực hiện công việc của mình", :all)
-        seer_in_game = Role.where("role_id = '4'").first.original_role_players
-        if seer_in_game.size == 1
-          L("Bạn chính là tiên tri, bạn được phép đọc bài bất kì ai, nhập a,b,c,d,.. để đọc, hoặc đọc 2 lá bài ở giữa 1,2,3
+    if !IsLock?
+      SetLock()
+      giveuptime = DateTime.strptime(GetStatus(StatusName::GiveUpTime), '%Y-%m-%dT%H:%M:%S%z')
+      if giveuptime < DateTime.now
+        SetStatus(StatusName::GiveUpTime, DateTime.now + 100.years)
+        task =Task.first
+        if task.name == TaskName::StartingGame
+          StartGame()
+          SetStatus(StatusName::IsNight, "true")
+          L("Mọi câu nói của các bạn từ bây giờ sẽ không ai thấy. Game chính thức bắt đầu, màn đêm bắt đầu buông xuống", :all)
+          CreateTask(TaskName::WatingForReadingRole, 5)
+        elsif task.name == TaskName::WatingForReadingRole
+          CreateTask(TaskName::ReadWolfCompanion, 3)
+        elsif task.name == TaskName::ReadWolfCompanion
+          L("Sói đang đi tìm kiếm bạn đồng hành của mình", :all)
+          wolfs_in_game = Role.where("role_id = '2'").first.original_role_players
+          # L(wolfs_in_game.to_s, :all)
+          # L(wolfs_in_game.size, :all)
+          if wolfs_in_game.size == 1
+            L("Bạn là ma sói duy nhất trong game, bạn được xem 1 quân bài ở giữa, vui lòng nhập một trong các số 1,2,3", wolfs_in_game.first.user.id)
+            CreateTask(TaskName::WolfReadCenterCard)
+          elsif wolfs_in_game.size ==2
+            L("Ma sói khác trong số người cùng chơi là "+ wolfs_in_game[1].user.nick_name + " - " +wolfs_in_game[1].char, wolfs_in_game[0].user.id)
+            L("Ma sói khác trong số người cùng chơi là "+ wolfs_in_game[0].user.nick_name + " - " +wolfs_in_game[0].char, wolfs_in_game[1].user.id)
+            CreateTask(TaskName::DoneReadWolfCompanion, 5)
+          else
+            CreateTask(TaskName::DoneReadWolfCompanion, 5)
+          end
+        elsif task.name == TaskName::DoneReadWolfCompanion
+          L("Sói đã hoàn thành nhiệm vụ và nhắm mắt ngủ tiếp", :all)
+          L("Tiên tri đang thức giấc và thực hiện công việc của mình", :all)
+          seer_in_game = Role.where("role_id = '4'").first.original_role_players
+          if seer_in_game.size == 1
+            L("Bạn chính là tiên tri, bạn được phép đọc bài bất kì ai, nhập a,b,c,d,.. để đọc, hoặc đọc 2 lá bài ở giữa 1,2,3
                       ví dụ nhập '12' hoặc 'c' hoặc '13'"+ PlayerInGame(), seer_in_game.first.user.id)
-          CreateTask(TaskName::SeerReadingCard)
-        else
-          CreateTask(TaskName::DoneSeerJob,5)
-        end
-      elsif task.name == TaskName::DoneSeerJob
-        L("Tiên tri đã hoàn thành nhiệm vụ và nhắm mắt ngủ tiếp", :all)
-        L("Đạo tặc đang thức dậy và thực hiện công việc của mình", :all)
-        robber_in_game = Role.where("role_id = '3'").first.original_role_players
-        if robber_in_game.size == 1
-          L("Bạn chính là đạo tặc, bạn được phép tráo bài với bất kì ai, nhập a,b,c,d,.. để tráo, hoặc nhập 0 để bỏ qua. "+PlayerInGame(),robber_in_game.first.user.id)
-          CreateTask(TaskName::RobberTakingOtherCard)
-        else
-          CreateTask(TaskName::DoneRobberJob,5)
-        end
-      elsif task.name ==TaskName::DoneRobberJob
-        L("Đạo tặc đã hoàn thành nhiệm vụ và nhắm mắt ngủ tiếp", :all)
-        L("Kẻ gây rối đang thức dậy và thực hiện công việc của mình", :all)
-        trouble_in_game = Role.where("role_id = '5'").first.original_role_players
-        if trouble_in_game.size == 1
-          L("Bạn chính là kẻ gây rối, bạn được phép tráo bài của 2 người bất kì, nhập 'ab', 'de', 'cd',.. để tráo giữa 2 người. "+PlayerInGame(),trouble_in_game.first.user.id)
-          CreateTask(TaskName::TroubleSwapCard)
-        else
-          CreateTask(TaskName::DoneTroubleCard,5)
-        end
-      elsif task.name == TaskName::DoneTroubleCard
-        L("Kẻ gây rối đã hoàn thành nhiệm vụ và nhắm mắt ngủ tiếp", :all)
-        L("Trời đã sáng, mọi người đã có thể nói chuyện với nhau để tìm ra ai là sói.", :all)
-        SetStatus(StatusName::IsNight, "false")
-        CreateTask(TaskName::DiscussingToFindWolf)
-      elsif task.name == TaskName::DoneVote
-        vote_all = Player.pluck(:vote)
-        log_all = "Vote: "
-        log_all_1 = "Thân phận: "
-        Game.first.players.each do |player|
-          if player.vote.nil?
-            log_all+= PlayerInGameName(player.user)+ " , "
-            count +=1
+            CreateTask(TaskName::SeerReadingCard)
+          else
+            CreateTask(TaskName::DoneSeerJob,5)
           end
-          log_all+= PlayerInGameName(player.user)+ " vote cho " + PlayerInGameName(Player.where("char = ?",player.vote).first.user) + " , "
-          add_str=""
-          if player.current_role.name != player.original_role.name
-            add_str += "(ban đầu là "+player.original_role.name+ " )"
+        elsif task.name == TaskName::DoneSeerJob
+          L("Tiên tri đã hoàn thành nhiệm vụ và nhắm mắt ngủ tiếp", :all)
+          L("Đạo tặc đang thức dậy và thực hiện công việc của mình", :all)
+          robber_in_game = Role.where("role_id = '3'").first.original_role_players
+          if robber_in_game.size == 1
+            L("Bạn chính là đạo tặc, bạn được phép tráo bài với bất kì ai, nhập a,b,c,d,.. để tráo, hoặc nhập 0 để bỏ qua. "+PlayerInGame(),robber_in_game.first.user.id)
+            CreateTask(TaskName::RobberTakingOtherCard)
+          else
+            CreateTask(TaskName::DoneRobberJob,5)
           end
-          total_vote_receive = 0
-          vote_all.each {|vote| total_vote_receive+= 1 if vote == player.char}
-          log_all_1 += PlayerInGameName(player.user)+ " là " + player.current_role.name + add_str+ " nhận được" + total_vote_receive.to_s +  " , "
+        elsif task.name ==TaskName::DoneRobberJob
+          L("Đạo tặc đã hoàn thành nhiệm vụ và nhắm mắt ngủ tiếp", :all)
+          L("Kẻ gây rối đang thức dậy và thực hiện công việc của mình", :all)
+          trouble_in_game = Role.where("role_id = '5'").first.original_role_players
+          if trouble_in_game.size == 1
+            L("Bạn chính là kẻ gây rối, bạn được phép tráo bài của 2 người bất kì, nhập 'ab', 'de', 'cd',.. để tráo giữa 2 người. "+PlayerInGame(),trouble_in_game.first.user.id)
+            CreateTask(TaskName::TroubleSwapCard)
+          else
+            CreateTask(TaskName::DoneTroubleCard,5)
+          end
+        elsif task.name == TaskName::DoneTroubleCard
+          L("Kẻ gây rối đã hoàn thành nhiệm vụ và nhắm mắt ngủ tiếp", :all)
+          L("Trời đã sáng, mọi người đã có thể nói chuyện với nhau để tìm ra ai là sói.", :all)
+          SetStatus(StatusName::IsNight, "false")
+          CreateTask(TaskName::DiscussingToFindWolf)
+        elsif task.name == TaskName::DoneVote
+          vote_all = Player.pluck(:vote)
+          log_all = "Vote: "
+          log_all_1 = "Thân phận: "
+          Game.first.players.each do |player|
+            if player.vote.nil?
+              log_all+= PlayerInGameName(player.user)+ " , "
+              count +=1
+            end
+            log_all+= PlayerInGameName(player.user)+ " vote cho " + PlayerInGameName(Player.where("char = ?",player.vote).first.user) + " , "
+            add_str=""
+            if player.current_role.name != player.original_role.name
+              add_str += "(ban đầu là "+player.original_role.name+ " )"
+            end
+            total_vote_receive = 0
+            vote_all.each {|vote| total_vote_receive+= 1 if vote == player.char}
+            log_all_1 += PlayerInGameName(player.user)+ " là " + player.current_role.name + add_str+ " nhận được" + total_vote_receive.to_s +  " , "
+          end
+          L(log_all, :all)
+          L(log_all_1, :all)
+          CreateTask(TaskName::WatingForStartGame)
         end
-        L(log_all, :all)
-        L(log_all_1, :all)
-        CreateTask(TaskName::WatingForStartGame)
       end
+      UnLock()
     end
   end
 
@@ -335,6 +331,30 @@ module ChatlogsHelper
 
   def GetStatus(name)
     Game.first.game_statuses.where(name: name).first.value
+  end
+
+  def IsLock?
+    locks = Lock.all
+    if locks.size ==0
+      false
+    else
+      time = locks.first.time
+      if time <=0
+        Lock.destroy_all
+        false
+      else
+        locks.first.update_attribute(:time, time - 1)
+        true
+      end
+    end
+  end
+
+  def SetLock
+    Lock.create(time: 5)
+  end
+
+  def UnLock
+    Lock.destroy_all
   end
 
   def PlayerInGame

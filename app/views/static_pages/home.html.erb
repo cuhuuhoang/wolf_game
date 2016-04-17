@@ -34,7 +34,7 @@
             </div>
           </div>
         </li>
-        <span id="new_logs"></span>
+        <span id="new_logs" data-lock="false"></span>
       </ul>
     </div>
     <div class="nano-pane"><div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div></div></div>
@@ -60,6 +60,7 @@
         return false; // Prevent page refresh
       }
       function checkLog(){
+        $( "#new_logs" ).data("lock", "true");
         var logid = $( "li" ).last().data("id");
         var url = "/chatlogs";
         if (logid != undefined) {url = url + "?id="+logid;}
@@ -67,10 +68,12 @@
         $.get( url, function( data ) {
           $("#new_logs").before(data);
           if(data.length >0 )scrollBottom();
+          $( "#new_logs" ).data("lock", "false");
         });
+
       }
 
-      setInterval(function(){ checkLog() }, 1500);
+      setInterval(function(){ checkLog() }, 2000);
 
       function scrollBottom(){
         var height = 0;
