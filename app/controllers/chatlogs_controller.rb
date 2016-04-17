@@ -9,7 +9,7 @@ class ChatlogsController < ApplicationController
     end
 
     if(!chatlog.nil?)
-      @chatlogs = CurrentGameLog().where("created_at > ? AND (target = 'all' OR target = '?')", chatlog.created_at, current_user.id)
+      @chatlogs = CurrentGameLog().where("created_at > ? AND (target = 'all' OR target = '?') AND id > ?", chatlog.created_at, current_user.id, chatlog.id)
     else
       @chatlogs = CurrentGameLog().where("created_at > ? AND (target = 'all' OR target = '?')", 10.minutes.ago, current_user.id)
     end
