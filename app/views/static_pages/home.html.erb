@@ -60,16 +60,21 @@
         return false; // Prevent page refresh
       }
       function checkLog(){
-        $( "#new_logs" ).data("lock", "true");
-        var logid = $( "li" ).last().data("id");
-        var url = "/chatlogs";
-        if (logid != undefined) {url = url + "?id="+logid;}
-        $("#new_logs")
-        $.get( url, function( data ) {
-          $("#new_logs").before(data);
-          if(data.length >0 )scrollBottom();
+        var lock = $( "#new_logs" ).data("lock");
+        if(lock =="false"){
+          $( "#new_logs" ).data("lock", "true");
+          var logid = $( "li" ).last().data("id");
+          var url = "/chatlogs";
+          if (logid != undefined) {url = url + "?id="+logid;}
+          $("#new_logs")
+          $.get( url, function( data ) {
+            $("#new_logs").before(data);
+            if(data.length >0 )scrollBottom();
+            $( "#new_logs" ).data("lock", "false");
+          });
+        } else {
           $( "#new_logs" ).data("lock", "false");
-        });
+        }
 
       }
 
